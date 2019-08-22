@@ -142,19 +142,16 @@
                             background: red;
                         `
                         strong.append(element.username + ": ")
+                        strong.append("")
                         //Agregamos cada uno de los elementos encontrados al elemento de html
                         message.append(strong)
                         message.append(element.chatmessage)
                         mensaje.appendChild(message)
                         mensaje.scrollTop = mensaje.scrollHeight
-                        /* Mover a la derecha los mensaje que uno manda
-                        if(element.username == 'Anonimo' && element.chatmessage == label.value.trim() ){
-                            message.style = `
-                                position: absolute;
-                                border: 2px solid green;
-                            `
-                        }
-                        */
+                        strong.append("")
+                        strong.append("")
+                        strong.append("")
+
                     }
                 })
             })
