@@ -123,8 +123,8 @@
                         //Le damos un valor maximo a la imagen para que no se salga del width
                         image.src = element.chatmessage
                         image.style = `
-                            max-width: 300px;
-                            max-height: 300px;
+                            max-width: 250px;
+                            max-height: 250px;
                         `
                         message_imagen.append(image)
                         mensaje.append(message_imagen)
@@ -139,6 +139,7 @@
                         const strong = document.createElement("strong")
                         message.style = `
                             max-width: 300px;
+                            background: red;
                         `
                         strong.append(element.username + ": ")
                         //Agregamos cada uno de los elementos encontrados al elemento de html
