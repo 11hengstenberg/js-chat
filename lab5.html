@@ -114,7 +114,11 @@
                         cuadrado.style = `
                             max-width: 100px;
                             max-height: 100px;
-                            background: red;
+                            border-radius: 84px 84px 0px 84px;
+                            -moz-border-radius: 84px 84px 0px 84px;
+                            -webkit-border-radius: 84px 84px 0px 84px;
+                            border: 0px solid #000000;
+                            background: #E4E5FF;
                         ` 
                         //Añadimos los elementos
                         strong.append(element.username + ": ")
@@ -179,7 +183,7 @@
                fetch(url, {method: 'POST',
                     body: `
                         {
-                            "username": "Anonimo",
+                            "username": "asdfasdf",
                             "chatmessage": "${label.value.trim()}"
                         }  
                     `
