@@ -1,0 +1,157 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <script type="application/javascript">
+            //Constantes para crear los elementos de html
+            const mensaje = document.createElement('ul')
+            const contenedor = document.createElement('div')
+            const button = document.createElement('button')
+            const label = document.createElement('textarea')
+            //Boton para agregar imagenes
+            const archivo = document.createElement('button')
+            //Constante para la url 
+            const url = 'http://msdeus.site:7000'
+
+            button.append("Enviar")
+            //140 limite de caracteres
+            label.maxLength = 140
+            document.body.append(mensaje)
+            document.body.append(contenedor) 
+
+            contenedor.appendChild(button)
+            contenedor.appendChild(label)
+            contenedor.appendChild(mensaje)
+
+            contenedor.style = `
+                display: absolute;
+                position: absolute;
+                width: 80%;
+                height: 55%;
+                border: 2px solid green;
+                left: 100px;
+            `
+            label.style = `
+                width: 76%;
+                height: 10%;
+                top: 300px; 
+                position: absolute;
+                left: 5px;
+            ` 
+            button.style = `
+                width: 20%;
+                height: 10%;
+                position: absolute;
+                top: 300px;
+                right: 6px;
+            `
+            mensaje.style = `
+                width: 95%;
+                height: 82%;
+                position: absolute;
+                left: 5px;
+                top: -12px;
+                overflow-y: scroll;
+                border: 2px solid blue;
+            `
+        //Funcion para obtener mensajes
+        function obtenerMensaje(){
+            mensaje.innerHTML = "";
+            fetch(url, {method: "GET"})
+                .then(response => {return response.json()})
+                //Buscamos por cada lista (for)
+                .then(response => {response.forEach(element => {
+                    //Si encuentra una imagen (jpg or jpeg or png)
+                    if ((/\.(jpg|jpeg|png)$/i).test(element.chatmessage)) {
+                        const message_imagen = document.createElement("div")
+                        //Para meter la imagen encontrada
+                        const cuadrado = document.createElement('div')
+                        const strong = document.createElement("strong")
+                        const image = document.createElement("img")
+                        //Cuadrado para diferenciar el usuario
+                        cuadrado.style = `
+                            max-width: 100px;
+                            max-height: 100px;
+                        ` 
+                        //Añadimos los elementos
+                        strong.append(element.username + ": ")
+                        cuadrado.append(strong)
+                        message_imagen.append(cuadrado)
+                        //Le damos un valor maximo a la imagen para que no se salga del width
+                        image.src = element.chatmessage
+                        image.style = `
+                            max-width: 300px;
+                            max-height: 300px;
+                        `
+                        message_imagen.append(image)
+                        mensaje.append(message_imagen)
+                        mensaje.scrollTop = mensaje.scrollHeight
+
+                    //Encuentra un mensaje sin obtener ningun parametro
+                    } else {
+                        //Encontrar un mensaje
+                        const message = document.createElement("div")
+                        //Limite para el maximo de caracteres por linea
+                        message.maxLength = 50
+                        const strong = document.createElement("strong")
+                        message.style = `
+                            max-width: 300px;
+                        `
+                        strong.append(element.username + ": ")
+                        //Agregamos cada uno de los elementos encontrados al elemento de html
+                        message.append(strong)
+                        message.append(element.chatmessage)
+                        mensaje.appendChild(message)
+                        mensaje.scrollTop = mensaje.scrollHeight
+                        /* Mover a la derecha los mensaje que uno manda
+                        if(element.username == 'Anonimo' && element.chatmessage == label.value.trim() ){
+                            message.style = `
+                                position: absolute;
+                                border: 2px solid green;
+                            `
+                        }
+                        */
+                    }
+                })
+            })
+        }
+        //Mandar un mensaje
+        button.onclick = function(){
+            fetch(url, {method: "POST",
+                body: `
+                    {
+                        "username": "Anonimo",
+                        "chatmessage": "${label.value.trim()}"
+                    }
+                `
+            }).then(() =>{
+                label.innerHTML = ""
+                obtenerMensaje()
+            }).then(() =>{
+                label.value = ""
+            })
+        }
+
+        //Utilizar el teclado para manda un mensaje
+       label.addEventListener('keypress', function(){
+           if(event.key == 'Enter'){
+               fetch(url, {method: 'POST',
+                    body: `
+                        {
+                            "username": "Anonimo",
+                            "chatmessage": "${label.value.trim()}"
+                        }  
+                    `
+               }).then(() =>{
+                   label.innerHTML = ""
+                   obtenerMensaje()
+               }).then(() =>{
+                   label.value = ""
+               })
+               event.preventDefault()
+           }
+       })
+       setTimeout(obtenerMensaje(), 1)
+        </script>
+    </body>
+</html>
