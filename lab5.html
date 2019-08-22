@@ -6,10 +6,15 @@
     <body>
         <script type="application/javascript">
 
-            
+            //constantes que se utilizaran
+
+            //para recibir mensajes 
             const mensaje = document.createElement('ul')
+            //contiene a todos los elementos dentro.
             const contenedor = document.createElement('div')
+            //boton para mandar mensajes
             const button = document.createElement('button')
+            //espacio para escribir y mandar el mensaje.
             const label = document.createElement('textarea')
             
 
@@ -18,7 +23,8 @@
 
             //Constante para la url 
             const url = 'http://msdeus.site:7000'
-            button.append("Enviar")
+            //texto del boton
+            button.append("Send")
 
             //140 limite de caracteres
             label.maxLength = 140
@@ -108,6 +114,7 @@
                         cuadrado.style = `
                             max-width: 100px;
                             max-height: 100px;
+                            background: red;
                         ` 
                         //Añadimos los elementos
                         strong.append(element.username + ": ")
