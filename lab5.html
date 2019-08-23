@@ -7,34 +7,36 @@
         <script type="application/javascript">
 
             //constantes que se utilizaran
-
-            //para recibir mensajes 
-            const mensaje = document.createElement('ul')
+            
+            //para recibir boxmensajess 
+            const boxmensajes = document.createElement('ul')
             //contiene a todos los elementos dentro.
             const contenedor = document.createElement('div')
-            //boton para mandar mensajes
+            //boton para mandar boxmensajess
             const button = document.createElement('button')
-            //espacio para escribir y mandar el mensaje.
-            const label = document.createElement('textarea')
+            //espacio para escribir y mandar el boxmensajes.
+            const sendmensaje = document.createElement('textarea')
             
-
-            //Boton para agregar imagenes
-            const archivo = document.createElement('button')
 
             //Constante para la url 
             const url = 'http://msdeus.site:7000'
             //texto del boton
+
+
             button.append("Send")
 
-            //140 limite de caracteres
-            label.maxLength = 140
-            document.body.append(mensaje)
+            //140 caracteres
+            sendmensaje.maxLength = 140
+
+            //hacerlos hijos
+            document.body.append(boxmensajes)
             document.body.append(contenedor) 
 
             contenedor.appendChild(button)
-            contenedor.appendChild(label)
-            contenedor.appendChild(mensaje)
+            contenedor.appendChild(sendmensaje)
+            contenedor.appendChild(boxmensajes)
 
+            //contenedor mas grande
             contenedor.style = `
                 display: absolute;
                 position: absolute;
@@ -45,44 +47,16 @@
                 border: 0px solid #000000;
 
                 background: #1800FE;
-                width: 80%;
-                height: 55%;
+                width: 20%;
+                height: 75%;
                 left: 100px;
                 right: 100px;
+                box-shadow: 5px 5px 10px blue;
             `
-            label.style = `
-                width: 76%;
-                height: 10%;
-                top: 360px; 
 
-                border-radius: 20px 20px 20px 20px;
-                -moz-border-radius: 20px 20px 20px 20px;
-                -webkit-border-radius: 20px 20px 20px 20px;
-
-
-                background: #A9AAFE;
-
-
-                position: absolute;
-                left: 15px;
-            ` 
-            button.style = `
-                width: 20%;
-                height: 10%;
-                position: absolute;
-                top: 362px;
-                right: 10px;
-                
-                border-radius: 40px 40px 40px 40px;
-                -moz-border-radius: 40px 40px 40px 40px;
-                -webkit-border-radius: 40px 40px 40px 40px;
-
-
-                background: #A9AAFE;
-
-            `
-            mensaje.style = `
-                width: 95%;
+            //donde se ven los mensajes
+            boxmensajes.style = `
+                width: 85%;
                 height: 82%;
                 position: absolute;
 
@@ -96,112 +70,113 @@
                 overflow-y: scroll;
                 border: 2px solid blue;
             `
-        //Funcion para obtener mensajes
-        function obtenerMensaje(){
-            mensaje.innerHTML = "";
-            fetch(url, {method: "GET"})
-                .then(response => {return response.json()})
-                //Buscamos por cada lista (for)
-                .then(response => {response.forEach(element => {
-                    //Si encuentra una imagen (jpg or jpeg or png)
-                    if ((/\.(jpg|jpeg|png)$/i).test(element.chatmessage)) {
-                        const message_imagen = document.createElement("div")
-                        //Para meter la imagen encontrada
-                        const cuadrado = document.createElement('div')
-                        const strong = document.createElement("strong")
-                        const image = document.createElement("img")
-                        //Cuadrado para diferenciar el usuario
-                        cuadrado.style = `
-                            max-width: 100px;
-                            max-height: 100px;
-                            border-radius: 84px 84px 0px 84px;
-                            -moz-border-radius: 84px 84px 0px 84px;
-                            -webkit-border-radius: 84px 84px 0px 84px;
-                            border: 0px solid #000000;
-                            background: #E4E5FF;
-                        ` 
-                        //Añadimos los elementos
-                        strong.append(element.username + ": ")
-                        cuadrado.append(strong)
-                        message_imagen.append(cuadrado)
-                        //Le damos un valor maximo a la imagen para que no se salga del width
-                        image.src = element.chatmessage
-                        image.style = `
-                            max-width: 250px;
-                            max-height: 250px;
-                        `
-                        message_imagen.append(image)
-                        mensaje.append(message_imagen)
-                        mensaje.scrollTop = mensaje.scrollHeight
+            //para escribir los mensajes
+            sendmensaje.style = `
+                width: 66%;
+                height: 10%;
+                top: 490px; 
 
-                    //Encuentra un mensaje sin obtener ningun parametro
-                    } else {
+                border-radius: 20px 20px 20px 20px;
+                -moz-border-radius: 20px 20px 20px 20px;
+                -webkit-border-radius: 20px 20px 20px 20px;
+
+
+                background: #A9AAFE;
+
+
+                position: absolute;
+                left: 15px;
+            ` 
+            //boton para enviar mensaje
+            button.style = `
+                width: 20%;
+                height: 10%;
+                position: absolute;
+                top: 494px;
+                right: 10px;
+                
+                border-radius: 40px 40px 40px 40px;
+                -moz-border-radius: 40px 40px 40px 40px;
+                -webkit-border-radius: 40px 40px 40px 40px;
+
+
+                background: #A9AAFE;
+
+            `
+        //obtener mensajes
+        function obtenerboxmensajes(){
+            boxmensajes.innerHTML = "";
+            fetch(url)
+                .then(response => {return response.json()})
+
+                //buscamos en la lista  
+                .then(response => {response.forEach(element => {
+
                         //Encontrar un mensaje
-                        const message = document.createElement("div")
-                        //Limite para el maximo de caracteres por linea
-                        message.maxLength = 50
+                        const message = document.createElement("li")
+                        //estilo
                         const strong = document.createElement("strong")
                         message.style = `
-                            max-width: 300px;
-                            border-radius: 84px 84px 0px 84px;
-                            -moz-border-radius: 84px 84px 0px 84px;
-                            -webkit-border-radius: 84px 84px 0px 84px;
+                            max-width: 400px;
+                            border-radius: 10px 200px 200px 200px;
+                            -moz-border-radius: 10px 200px 200px 200px;
+                            -webkit-border-radius: 10px 200px 200px 200px;
                             border: 0px solid #000000;
-                            
+                            margin: 20px;
+                            background: #E4E5FF;
                             
                         `
+                        //los agregamos al html
+                        //username en negrita
                         strong.append(element.username + ": ")
-                        strong.append("")
-                        //Agregamos cada uno de los elementos encontrados al elemento de html
+                        //espacion para diferenciar entre username y texto
+                        strong.append(document.createElement("br"))
+                        strong.append("\n")
+                        //ingresamos los valores al htmls
                         message.append(strong)
                         message.append(element.chatmessage)
-                        mensaje.appendChild(message)
-                        mensaje.scrollTop = mensaje.scrollHeight
-                        strong.append("")
-                        strong.append("")
-                        strong.append("")
+                        message.append(document.createElement("br"))
+                        boxmensajes.appendChild(message)
+                        boxmensajes.scrollTop = boxmensajes.scrollHeight
 
-                    }
                 })
+
             })
         }
-        //Mandar un mensaje
+        //mandamos mensaje
         button.onclick = function(){
-            fetch(url, {method: "POST",
-                body: `
-                    {
-                        "username": "Anonimo",
-                        "chatmessage": "${label.value.trim()}"
-                    }
-                `
+            fetch(url, {method: "POST", body: 
+                `{"username": "asdfasdf","chatmessage": "${sendmensaje.value.trim()}"}`
             }).then(() =>{
-                label.innerHTML = ""
-                obtenerMensaje()
+                sendmensaje.innerHTML = ""
+                obtenerboxmensajes()
             }).then(() =>{
-                label.value = ""
+                sendmensaje.value = ""
             })
         }
 
-        //Utilizar el teclado para manda un mensaje
-       label.addEventListener('keypress', function(){
-           if(event.key == 'Enter'){
-               fetch(url, {method: 'POST',
-                    body: `
-                        {
-                            "username": "asdfasdf",
-                            "chatmessage": "${label.value.trim()}"
-                        }  
-                    `
+        //mandamos mensaje con Enter
+       sendmensaje.addEventListener('keypress', function(e){
+           if(e.keyCode == 13){
+               fetch(url, {method: "POST",
+                    body: `{"username": "asdfasdf", "chatmessage": "${sendmensaje.value.trim()}"}  `
+                }).then(() =>{
+                   sendmensaje.innerHTML = ""
+                   obtenerboxmensajes()
                }).then(() =>{
-                   label.innerHTML = ""
-                   obtenerMensaje()
-               }).then(() =>{
-                   label.value = ""
+                   sendmensaje.value = ""
                })
                event.preventDefault()
            }
        })
-       setTimeout(obtenerMensaje(), 1)
+
+       //actualizar los tiempos
+       function tiempo(){
+            obtenerboxmensajes()
+            //8 segundos
+            setTimeout(tiempo, 10000)
+       }
+       tiempo()
         </script>
     </body>
 </html>
